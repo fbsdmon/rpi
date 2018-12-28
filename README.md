@@ -78,6 +78,7 @@ Roles
 
 #### update-pi
 Update and upgrade Raspbian, clean up after upgrading, restart any services if needed and notify if reboot is neded
+[See the README.md for more information](./master/roles/config-pi/README.md)
 
 #### config-pi
 Basic Rasbian OS configuration, system hardening, standard packages installation, etc. See the Role Variables and Tags serction for more informaiton.
