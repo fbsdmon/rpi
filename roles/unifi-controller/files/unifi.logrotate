@@ -1,0 +1,10 @@
+# UniFi Controller logs rotation
+/var/log/unifi/*.log {
+    rotate 5
+    daily
+    missingok
+    notifempty
+    compress
+    delaycompress
+    copytruncate
+}

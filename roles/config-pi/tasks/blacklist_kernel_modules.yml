@@ -1,0 +1,37 @@
+- name: Blacklist Bluetooth kernel modules
+  copy:
+    src: blacklist-bluetooth.conf
+    dest: /etc/modprobe.d/blacklist-bluetooth.conf
+    owner: root
+    group: root
+    mode: 0640
+    backup: yes
+  when: disable_bluetooth
+
+- name: Remove Bluetooth kernel modules
+  modprobe:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - btbcm
+    - hci_uart
+  when: disable_bluetooth
+
+- name: Blacklist WiFi kernel modules
+  copy:
+    src: blacklist-wifi.conf
+    dest: /etc/modprobe.d/blacklist-wifi.conf
+    owner: root
+    group: root
+    mode: 0640
+    backup: yes
+  when: disable_wifi
+
+- name: Remove WiFi kernel modules
+  modprobe:
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - brcmfmac
+    - brcmutil
+  when: disable_wifi

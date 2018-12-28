@@ -1,0 +1,76 @@
+---
+# tasks file for config-pi
+
+- name: Set server hostname
+  hostname:
+    name: "{{ fqdn }}"
+  tags: hostname
+
+- name: Configure /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^[ \t]*#*[ \t]*{{ ansible_default_ipv4.address }}.*"
+    line: '{{ ansible_default_ipv4.address }}    {{ fqdn }} {{ hostname }}'
+    state: present
+    backup: yes
+  tags: hostname
+
+- name: Remove empty lines from /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: "^$"
+    state: absent
+    backup: yes
+  tags: hostname
+
+- name: Copy the MOTD banner
+  copy: 
+    src: motd
+    dest: /etc/motd
+  tags: motd
+
+- name: "Set timezone to {{ timezone }}"
+  timezone:
+    name: "{{ timezone }}"
+  tags: timezone
+
+- name: Copy the Bash resource script
+  template:
+    src: bashrc.sh
+    dest: /etc/bashrc.sh
+    mode: 0644
+    backup: yes
+  tags: bashrc
+
+- name: Link Bash resource script to root and skel
+  lineinfile:
+    dest: "{{ item }}"
+    line: '[ -f /etc/bashrc.sh ] && source /etc/bashrc.sh'
+    state: present
+    insertafter: 'EOF'
+    create: yes
+  with_items:
+    - /etc/skel/.profile
+    - /etc/skel/.bashrc
+    - /root/.bashrc
+  tags: bashrc
+
+- name: "Harden OS"
+  include: "harden.yml"
+  tags: harden
+
+- name: "Blacklist Kernel Mdules"
+  include: "blacklist_kernel_modules.yml"
+  tags: blacklist
+
+- name: "Disable IPv6"
+  include: "disable_ipv6.yml"
+  when: disable_ipv6
+  tags: blacklist
+
+- name: "Add/Remove Packages & Patterns"
+  include: "packages.yml"
+  tags: packages
+
+
+# ToD: sshd, sudoers, iptables, fail2ban, duckdns, let's encrypt

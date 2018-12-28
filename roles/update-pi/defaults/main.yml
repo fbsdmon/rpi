@@ -1,0 +1,11 @@
+---
+# defaults file for update-pi
+
+# Erase old downloaded archive files
+autoclean: true
+
+# Remove automatically all unused packages
+autoremove: true
+
+# Remove packages and config files 
+purge: true

@@ -1,0 +1,20 @@
+---
+# defaults file for config-pi
+
+# System Hostname, Domain and FQDN
+hostname: mypi
+domain: duckdns.org
+fqdn: "{{ hostname }}{% if domain %}.{{ domain }}{% endif %}"
+
+# Set the timezone
+timezone: Europe/Berlin
+
+# Set the default umask
+umask: "0007"
+
+# Disable WiFi and/or Bluetooth 
+disable_wifi: false
+disable_bluetooth: false
+
+# Disable IPv6
+disable_ipv6: false

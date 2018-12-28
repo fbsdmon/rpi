@@ -1,0 +1,22 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Test Paybook
+  hosts: "{{ target | default('MyPi')}}"
+  become: yes
+
+  pre_tasks:
+    - name: Include my Variables & Secrets
+      include_vars: secrets.vault.yml
+      tags: always
+  
+  roles:
+    - role: config-pi
+      disable_wifi: true
+      disable_bluetooth: true
+      disable_ipv6: true
+
+
+    
+    
+
+  

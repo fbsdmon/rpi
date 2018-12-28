@@ -1,0 +1,8 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Update Raspberry Pi
+  hosts: "{{ target | default('MyPi')}}"
+  become: yes
+
+  roles:
+    - update-pi

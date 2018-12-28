@@ -1,0 +1,12 @@
+---
+# defaults file for unifi-controller
+
+# UniFi repository
+unifi_repo: "deb http://www.ubnt.com/downloads/unifi/debian stable ubiquiti"
+# GPG Key for the UniFi repository
+unifi_repo_gpg_key: C0A52C50
+
+# Java Virtual Machine initial HEAP size
+jvm_init_heap: 512M
+# Java Virtual Machine maximum HEAP size
+jvm_max_heap: 512M

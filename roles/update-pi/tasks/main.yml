@@ -1,0 +1,99 @@
+---
+# tasks file for update-pi
+
+- name: Update packages list
+  apt: 
+    update_cache: yes
+  changed_when: false
+
+- name: Upgrade packages
+  apt: 
+    upgrade: full
+  register: _upgrade
+
+- name: Upgrade output
+  debug: var=_upgrade.stdout_lines
+  when: _upgrade.changed
+
+- name: Erase old downloaded archive files (autoclean)
+  apt:
+    autoclean: yes
+  register: _autoclean
+  changed_when: "_autoclean.stdout | regex_search('\nDel')"
+  when: autoclean
+
+- name: Autoclean output
+  debug: var=_autoclean.stdout_lines
+  when: _autoclean.changed
+
+- name: Remove automatically all unused packages (autoremove)
+  apt:
+    autoremove: yes
+  register: _autoremove
+  changed_when: "'0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded' not in _autoremove.stdout"
+  when: autoremove
+
+- name: Autoremove output
+  debug: var=_autoremove.stdout_lines
+  when: _autoremove.changed
+
+- name: Remove packages and config files (purge)
+  apt:
+    purge: yes
+  register: _purge
+  when: purge
+
+- name: Purge output
+  debug: var=_purge.stdout_lines
+  when: _purge.changed
+
+- name: Install the needrestart tool
+  apt:
+    name: needrestart
+    state: present
+  tags: needrestart
+
+- name: Check and restart srvices after library updates
+  shell: needrestart -ma -ra
+  register: _needrestart
+  changed_when: "'Running kernel seems to be up-to-date' not in _needrestart.stdout or \
+                'No services need to be restarted' not in _needrestart.stdout or \
+                'No containers need to be restarted' not in _needrestart.stdout or \
+                'No user sessions are running outdated binaries' not in _needrestart.stdout"
+  tags: needrestart
+
+- name: READ THIS
+  debug: var=_needrestart.stdout_lines
+  changed_when: _needrestart.changed
+  when: _needrestart.changed
+  tags: needrestart
+
+- name: Check the release version after upgrade
+  shell:  lsb_release -r | awk '{print $2}'
+  changed_when: False
+  register: _new_release
+  tags: version_upgrade
+- debug:
+    msg: "{% if ansible_lsb.release != _new_release.stdout %}
+             Debian has been upgraded from {{ ansible_lsb.release }} to {{ _new_release.stdout }}
+          {% else %}
+            Still running {{ ansible_lsb.description }}
+          {% endif %}"
+  changed_when: "ansible_lsb.release != _new_release.stdout"
+  tags: version_upgrade 
+
+- name: Check if a reboot is required
+  stat: 
+    path: /var/run/reboot-required 
+    get_md5: no
+  register: _reboot
+  tags: needrestart
+- debug:
+    msg: "{% if _reboot.stat.exists %}\
+            Please REBOOT !!\
+          {% else %}\
+            Reboot not needed\
+          {% endif %}"
+  changed_when: _reboot.stat.exists
+  tags: needrestart
+

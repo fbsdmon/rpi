@@ -1,0 +1,94 @@
+---
+# tasks file for unifi-controller
+# https://loganmarchione.com/2016/11/ubiquiti-unifi-controller-setup-raspberry-pi-3/
+
+- name: Add the GPG Key for the UniFi repository
+  apt_key:
+    keyserver: keyserver.ubuntu.com
+    id: "{{ unifi_repo_gpg_key }}"
+
+- name: Add the UniFi Stable repository
+  apt_repository:
+    repo: "{{ unifi_repo }}"
+    state: present
+    filename: unifi
+
+- name: Update apt cache and install the UniFi Controller
+  apt:
+    name: unifi
+    state: latest
+    update_cache: yes
+
+- name: Stop and disable MongoDB, UniFi will run its own instance
+  systemd:
+    name: mongodb
+    state: stopped
+    enabled: no
+
+- name: Stop the UniFi Controller service
+  systemd:
+    name: unifi
+    state: stopped
+
+- name: Install Oracle Java 8 JDK packages (OpenJDK has been known to have performance issues on the Pi)
+  apt:
+    name: oracle-java8-jdk
+    state: latest
+    update_cache: yes
+
+- name: Switch environment to use Oracle Java 8
+  alternatives:
+    name: java
+    path: /usr/lib/jvm/jdk-8-oracle-arm32-vfp-hflt/jre/bin/java
+
+- name: Copy unifi.service to /etc/systemd/system
+  copy:
+    src: /lib/systemd/system/unifi.service
+    dest: /etc/systemd/system/
+    remote_src: yes
+    backup: yes
+    
+- name: Configure unifi.service to use Oracle Java 8
+  lineinfile:
+    path: /etc/systemd/system/unifi.service
+    insertafter: '\[Service\]'
+    line: "Environment=JAVA_HOME=/usr/lib/jvm/jdk-8-oracle-arm32-vfp-hflt"
+    state: present
+
+- name: Configure JVM HEAP Size  
+  lineinfile:
+    dest: /usr/lib/unifi/bin/unifi.init
+    regexp: "{{ item.find }}"
+    line: "{{ item.replace }}"
+    backup: yes
+  with_items:
+    - find: "^JVM_INIT_HEAP_SIZE=.*"
+      replace: "JVM_INIT_HEAP_SIZE={{ jvm_init_heap }} "
+    - find: "^JVM_MAX_HEAP_SIZE=.*"
+      replace: "JVM_MAX_HEAP_SIZE={{ jvm_max_heap }}"
+  tags: heap
+
+- name: Configure log rotation
+  copy:
+    src: unifi.logrotate
+    dest: /etc/logrotate.d/unifi
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Configure cron (Restart UniFi Controller to refresh memory usage)
+  copy:
+    src: unifi.cron
+    dest: /etc/cron.d/unifi
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+- name: Start UniFi Controller and enable at boot
+  systemd:
+    name: unifi
+    state: restarted
+    daemon_reload: yes
+    enabled: yes

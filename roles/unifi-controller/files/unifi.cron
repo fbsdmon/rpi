@@ -1,0 +1,4 @@
+# Restart UniFi Controller to refresh memory usage
+SHELL=/bin/bash
+PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+0 4 * * * root systemctl restart unifi

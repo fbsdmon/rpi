@@ -1,0 +1,48 @@
+- name: Remove the built-in "pi" user
+  user:
+    name: pi
+    state: absent
+    remove: yes
+  tags: remove_users
+
+- name: Set swappiness to 0 so server will only swap if running out of memory
+  sysctl:
+    name: vm.swappiness
+    value: 0
+    state: present
+    reload: yes
+  tags: swappienss
+    
+- name: "Set default umask for users to {{ umask }}"
+  lineinfile:
+    dest: "{{ item.file }}"
+    regexp: "[ \t]*#*[ \t]*{{ item.umask }}.*"
+    line: "{{ item.umask }}    {{ umask }}"
+    backup: yes
+  with_items:
+    - { file: /etc/login.defs, umask: "UMASK"}
+    - { file: /etc/profile, umask: "umask"}
+  tags: umask
+
+- name: Disable core dumps in /etc/security/limits.conf
+  lineinfile:
+    dest: /etc/security/limits.conf
+    regexp: "{{ item.find }}"
+    line: "{{ item.replace }}"
+    backup: yes
+  with_items:
+    - { find: ".*soft[ \t]*core.*", replace: '* soft core 0' }
+    - { find: ".*hard[ \t]*core.*", replace: '* hard core 0' }
+  tags: core_dumps
+
+# - name: Configure password expiry and warning for local users
+#   lineinfile:
+#     dest: /etc/login.defs
+#     regexp: "{{ item.find }}"
+#     line: "{{ item.replace }}"
+#     backup: yes
+#   with_items:
+#     - { find: "^[ \t]*PASS_MAX_DAYS.*", replace: "PASS_MAX_DAYS   90 " }
+#     - { find: "^[ \t]*PASS_MIN_DAYS.*", replace: "PASS_MIN_DAYS   7 " }
+#     - { find: "^[ \t]*PASS_WARN_AGE.*", replace: "PASS_WARN_AGE   7 " }
+#   tags: pass_expiry

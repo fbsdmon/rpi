@@ -1,0 +1,4 @@
+*.log
+*.retry
+test.yml
+inventory.yml
