@@ -1,10 +1,18 @@
-rpi
-===
 Manage Raspberry Pi with Ansible
+
+**Table Of Contents**
+- [Introduction](#introduction)
+- [Prerequisites](#prerequisites)
+  - [How-To install Ansible on Raspberry Pi](#how-to-install-ansible-on-raspberry-pi)
+- [Playbooks](#playbooks)
+- [Roles](#roles)
+  - [update-pi](#update-pi)
+  - [config-pi](#config-pi)
+  - [unifi-controller](#unifi-controller)
 
 
 Introduction
-------------
+============
 
 I always take notes. I meticulously craft copy/paste commands for each thing I install and configure, commenting each line and/or block, describe which parts I need to edit before executing in a console. It's a form of automation really, a whole lot of bash code.  
 I have notes on how to handle disk paritioning, voume management and formatting from 15 years ago, how to configure exim or postfix, how to cluster and partition MySQL and Postgres, setup OpenLDAP and 389DS, configuring and troubleshootinng BGP and OSPF on Cisco devices, securing/hardening different Linux distros, setting up a MQTT broker, how to do all sorts of home automation with Home Assistant, how to write Alexa skills, Git, Docker.... I can go on for a few pages like this :) Needles to say, it's a decent knowledge base with focus on reusability. 
@@ -14,11 +22,12 @@ This project is my effort to find the time (yes, time is the main culprit in thi
 
 
 Prerequisites
--------------
+=============
 * Git
 * Ansible 2.7+
 
-#### How-To install Ansible on Raspberry Pi
+How-To install Ansible on Raspberry Pi
+--------------------------------------
 
 I recommend always running the latest version of Ansible. The following copy/paste instructions should work on any Raspbian/Debian based system:
 
@@ -54,7 +63,7 @@ ansible --version
 
 
 Playbooks 
----------
+=========
 
 Playbooks are executable and can be run without invoking `ansible-playbook`, just run
 ```
@@ -74,12 +83,21 @@ Use the provided `local` host definition to run a playbook directly on Raspberry
 
 
 Roles
------
+=====
 
-#### update-pi
+update-pi
+---------
 Update and upgrade Raspbian, clean up after upgrading, restart any services if needed and notify if reboot is neded  
+[See the README.md for more information](./roles/update-pi/README.md)
+
+config-pi
+---------
+Basic Rasbian OS configuration, system hardening, standard packages installation, etc. See the Role Variables and Tags serction for more informaiton.  
 [See the README.md for more information](./roles/config-pi/README.md)
 
-#### config-pi
-Basic Rasbian OS configuration, system hardening, standard packages installation, etc. See the Role Variables and Tags serction for more informaiton.
 
+unifi-controller
+----------------
+Install and Configure UniFi Controller   
+*NOTE*: Installs MongoDB and Oracle Java as dependencies  
+[See the README.md for more information](./roles/unifi-controller/README.md)
