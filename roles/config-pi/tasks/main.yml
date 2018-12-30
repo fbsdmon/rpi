@@ -27,6 +27,8 @@
   template: 
     src: motd
     dest: /etc/motd
+    mode: 0644
+    backup: yes
   tags: motd
 
 - name: "Set timezone to {{ timezone }}"
