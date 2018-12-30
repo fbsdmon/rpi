@@ -10,6 +10,7 @@ Manage Raspberry Pi with Ansible
 - [Roles](#roles)
   - [update-pi](#update-pi)
   - [config-pi](#config-pi)
+  - [duckdns-pi](#duckdns-pi)
   - [unifi-controller](#unifi-controller)
 
 
@@ -109,6 +110,11 @@ config-pi
 ---------
 Basic Rasbian OS configuration, system hardening, standard packages installation, etc. See the Role Variables and Tags serction for more informaiton.  
 [See the README.md for more information](./roles/config-pi/README.md)
+
+duckdns-pi
+----------
+Configure Duck DNS on your Raspberry Pi, a free dynamic DNS service  
+[See the README.md for more information](./roles/duckdns-pi/README.md)
 
 
 unifi-controller

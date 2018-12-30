@@ -1,0 +1,17 @@
+---
+# tasks file for duckdns-pi
+
+- name: Create the duckdns.sh script
+  template: 
+    src: duckdns.sh
+    dest: /usr/local/bin/duckdns.sh
+    mode: 0700
+    backup: yes
+
+- name: Run duckns.sh every five minutes
+  cron:
+    name: DuckDNS-Update
+    minute: "*/5"
+    user: root
+    job: /usr/local/bin/duckdns.sh
+    cron_file: duckdns

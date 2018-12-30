@@ -1,0 +1,8 @@
+---
+# defaults file for duckdns-pi
+
+# The duckdns.org subdomain you want to update
+duckdns_subdomain: MyPi
+
+# Your DuckDNS account token
+duckdns_token: a7c4d0ad-114e-40ef-ba1d-d217904a50f2
