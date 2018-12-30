@@ -18,3 +18,20 @@ disable_bluetooth: false
 
 # Disable IPv6
 disable_ipv6: false
+
+# Logon banner and disclaimer (motd) 
+# The "|2" is the yaml way of saying "start a block scalar with 2 spaces indentation"
+motd_ascii_art: |2
+       .~~.   .~~.
+      '. \ ' ' / .'
+       .~ .~~~..~.                       _                          _
+      : .~.'~'.~. :      ___ ___ ___ ___| |_ ___ ___ ___ _ _    ___|_|
+     ~ (   ) (   ) ~    |  _| .'|_ -| . | . | -_|  _|  _| | |  | . | |
+    ( : '~'.~.'~' : )   |_| |__,|___|  _|___|___|_| |_| |_  |  |  _|_|
+     ~ .~ (   ) ~. ~                |_|                 |___|  |_|
+      (  : '~' :  )
+       '~ .~~~. ~'
+           '~'
+
+motd_disclaimer: This system is the private property. Unauthorized access to or use of this system is strictly prohibited and may subject you to legal prosecution!
+

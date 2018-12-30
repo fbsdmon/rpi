@@ -20,13 +20,15 @@ Role Variables
 * `disable_ipv6` Disables IPv6 in kernel (default: false)
 * `disable_wifi` Disable WiFi in kernel (default: false)
 * `disable_bluetooth` Disable Bluetooth in kernel (default: false)
+* `motd_ascii_art` Logon banner (some ascii art maybe)
+* `motd_disclaimer` Logon disclaimer
 
 
 Role Tags
 --------------
 
 * `hostname` Configure the hostname and hosts file
-* `motd` Set the login banner
+* `motd` Set the logon banner and disclaimer
 * `timezone` Set the timezone
 * `bashrc` Setup a default bash resource script for all users
 * `harden` Run system hardening tasks

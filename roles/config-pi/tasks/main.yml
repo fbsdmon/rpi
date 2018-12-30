@@ -24,7 +24,7 @@
   tags: hostname
 
 - name: Copy the MOTD banner
-  copy: 
+  template: 
     src: motd
     dest: /etc/motd
   tags: motd
