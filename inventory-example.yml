@@ -6,12 +6,12 @@ all:
     MyPi:
       ansible_host: 192.168.1.101
       ansible_port: 22
-      ansible_user: <myuser>
-      ansible_ssh_pass: <password>
-      ansible_become_user: <sudo user>
-      ansible_become_pass: <password>
+      ansible_user: pi
+      ansible_ssh_pass: raspberry
+      # ansible_become_user: <sudo user>
+      # ansible_become_pass: <password>
     AnotherPi:
       ansible_host: 192.168.1.102
       ansible_port: 22
-      ansible_user: <myuser>
+      ansible_user: pi
       ansible_ssh_private_key_file: ~/.ssh/id_rsa

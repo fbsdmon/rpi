@@ -1,11 +1,12 @@
-# Secrets - Do NOT commit unencrypted!
+# Vault - Do NOT commit unencrypted!
 # 
 # Use this file to store all your private data (configuraiton variables, 
 # credentials, etc.) needed to configure and run your Raspberry Pi
+#
 #-------------------------------------------------------------------------------
 # Linux
 #-------------------------------------------------------------------------------
-hostname: MyHostname
+hostname: MyPi
 domain: duckdns.org
 fqdn: "{{ hostname }}{% if domain %}.{{ domain }}{% endif %}"
 

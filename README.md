@@ -5,6 +5,8 @@ Manage Raspberry Pi with Ansible
 - [Prerequisites](#prerequisites)
   - [How-To install Ansible on Raspberry Pi](#how-to-install-ansible-on-raspberry-pi)
 - [Playbooks](#playbooks)
+  - [Target](#target)
+  - [Vault](#vault)
 - [Roles](#roles)
   - [update-pi](#update-pi)
   - [config-pi](#config-pi)
@@ -66,20 +68,33 @@ Playbooks
 =========
 
 Playbooks are executable and can be run without invoking `ansible-playbook`, just run
-```
+```bash
 ./playbook.yml
 ```
-By default, all playbooks will run against the the `MyPi` host/group (See the `inventory-examples.yml` for more information). You can execute a playbook against any host/group in the inventory using the `target` variable like this
-```
-./playbook.yml -e target=<my host or group>
-```
 
-Use the provided `local` host definition to run a playbook directly on Raspberry Pi
+Target
+------
+
+You will prmopted to enter the "target host", against which the playbook will run. You should define all hosts in the Ansible inventory (See the `inventory-examples.yml`)  
+The target host can be povided on the command line using the `target` variable, for example  
+```bash
+./playbook.yml -e target=MyPi
+./playbook.yml -e target=192.168.1.101
 ```
+Use the provided `local` host definition to run a playbook directly on Raspberry Pi
+```bash
 ./playbook.yml -e target=local
 ```
 
-> Some playbooks require the `secrets.vault.yml` which holds all my private data (settings, credentials, etc) and overrides the default values in the roles. You can remove the include_vars pre_tasks from the playbook, empty out the secrets file or setup your own secrets.
+Vault
+-----
+ 
+Some playbooks will expect a `<target>.vault.yml` file. The idea is to store all your private data (configuraiton variables, credentials, etc.) needed to configure and run your Raspberry Pi in a single encrypted file, which the playbook will load based on the target host you are provisioning and override the default variables from the roles. (See the `MyPi.vault-example.yml`)  
+You can provide a different vault file using the `vault` variable, for example
+```bash
+./playbook.yml -e target=MyPi vault=secrets.vault.yml
+```
+> You can bypas the vault file by remove the include_vars task from the playbook or providing an empty vault file
 
 
 Roles

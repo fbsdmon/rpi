@@ -1,13 +1,18 @@
 #!/usr/bin/env ansible-playbook
 ---
-- name: Test Paybook
-  hosts: "{{ target | default('MyPi')}}"
+- name: Example playbook for config-pi role
+  hosts: "{{ target }}"
   become: yes
 
+  vars_prompt:
+  - name: "target"
+    prompt: "Target host"
+    private: no
+
   pre_tasks:
-    - name: Include my Variables & Secrets
-      include_vars: secrets.vault.yml
-      tags: always
+  - name: "Include {% if vault is defined %}{{ vault }}{% else %}{{ target }}{% endif %}.vault.yml (configuraiton variables, credentials, etc.)"
+    include_vars: "{% if vault is defined %}{{ vault }}{% else %}{{ target }}{% endif %}.vault.yml"
+    tags: always
   
   roles:
     - role: config-pi
