@@ -10,7 +10,19 @@ hostname: MyPi
 domain: duckdns.org
 fqdn: "{{ hostname }}{% if domain %}.{{ domain }}{% endif %}"
 
-duckdns_token: some token
+motd_disclaimer: |
+  This system is the property of NAME SURNAME.
+  Unauthorized access to or use of this system is strictly prohibited and may subject you to legal prosecution!
+
+#-------------------------------------------------------------------------------
+# DuckDNS
+#-------------------------------------------------------------------------------
+
+# The duckdns.org subdomain you want to update
+duckdns_subdomain: "{{ hostname }}"
+
+# Your DuckDNS account token
+duckdns_token: c7361777-95bc-4868-93e5-c933242629bb
 
 #-------------------------------------------------------------------------------
 # Home Assistant
