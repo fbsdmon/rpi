@@ -108,6 +108,9 @@ if [ "$(uname)" == "Darwin" ]; then
     complete -F _complete_ssh_hosts ssh
 fi
 
+# Learn something
+[ -f /usr/games/cowsay ] && /usr/games/cowsay $(whatis $(ls -1A /sbin /usr/sbin /bin /usr/bin | grep -v "/usr/sbin:" | grep -v "/sbin:" | grep -v "/usr/sbin:" | grep -v "/bin:" | grep -v "/usr/bin:" | grep -v "^$") 2>/dev/null | shuf -n 1)
+
 ################################################################################
 # perssonal (not to be shared with the bashrc.sh resource script)
 ################################################################################
