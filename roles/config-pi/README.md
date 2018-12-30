@@ -65,4 +65,4 @@ GPL v3
 Author Information
 ------------------
 
-fBSDmon@gmail.com
+[Perica Veljanovski](mailto:fBSDmon@gmail.com)
