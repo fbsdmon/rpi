@@ -25,6 +25,19 @@ duckdns_subdomain: "{{ hostname }}"
 duckdns_token: c7361777-95bc-4868-93e5-c933242629bb
 
 #-------------------------------------------------------------------------------
+# Let’s Encrypt
+#-------------------------------------------------------------------------------
+
+# Domain (fqdn) for which you want to obtain a certificate
+letsencrypt_fqdn: "{{ hostname }}"
+
+# Account (e-mail) under which your domain(s) will be registered
+letsencrypt_email: <your email here>
+
+# CertBot listening port
+letsencrypt_port: "80"
+
+#-------------------------------------------------------------------------------
 # Home Assistant
 #-------------------------------------------------------------------------------
 

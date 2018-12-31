@@ -1,0 +1,11 @@
+---
+# defaults file for letsencrypt-pi
+
+# Domain (fqdn) for which you want to obtain a certificate
+letsencrypt_fqdn: MyPi.duckdns.org
+
+# Account (e-mail) under which your domain(s) will be registered
+letsencrypt_email: root@mypi.duckdns.org
+
+# CertBot listening port
+letsencrypt_port: "80"

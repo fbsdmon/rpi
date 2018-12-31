@@ -20,6 +20,8 @@
       disable_bluetooth: true
       disable_ipv6: true
     - role: duckdns-pi
+    - role: letsencrypt-pi
+
 
 
     

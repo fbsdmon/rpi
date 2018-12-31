@@ -11,6 +11,7 @@ Manage Raspberry Pi with Ansible
   - [update-pi](#update-pi)
   - [config-pi](#config-pi)
   - [duckdns-pi](#duckdns-pi)
+  - [letsencrypt-pi](#letsencrypt-pi)
   - [unifi-controller](#unifi-controller)
 
 
@@ -116,6 +117,11 @@ duckdns-pi
 Configure Duck DNS on your Raspberry Pi, a free dynamic DNS service  
 [See the README.md for more information](./roles/duckdns-pi/README.md)
 
+letsencrypt-pi
+--------------
+
+[Let’s Encrypt](https://letsencrypt.org/) is a free, automated, and open certificate authority. The `letsencrypt-pi` role will install CertBot, obtain a free certificate for your domain and setup an automated renewal process.  
+[See the README.md for more information](./roles/letsencrypt-pi/README.md)
 
 unifi-controller
 ----------------
