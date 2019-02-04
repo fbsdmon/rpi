@@ -12,17 +12,14 @@ Manage Raspberry Pi with Ansible
   - [config-pi](#config-pi)
   - [duckdns-pi](#duckdns-pi)
   - [letsencrypt-pi](#letsencrypt-pi)
+  - [mariadb-pi](#mariadb-pi)
   - [unifi-controller](#unifi-controller)
 
 
 Introduction
 ============
 
-I always take notes. I meticulously craft copy/paste commands for each thing I install and configure, commenting each line and/or block, describe which parts I need to edit before executing in a console. It's a form of automation really, a whole lot of bash code.  
-I have notes on how to handle disk paritioning, voume management and formatting from 15 years ago, how to configure exim or postfix, how to cluster and partition MySQL and Postgres, setup OpenLDAP and 389DS, configuring and troubleshootinng BGP and OSPF on Cisco devices, securing/hardening different Linux distros, setting up a MQTT broker, how to do all sorts of home automation with Home Assistant, how to write Alexa skills, Git, Docker.... I can go on for a few pages like this :) Needles to say, it's a decent knowledge base with focus on reusability. 
-
-Some years ago I discovered Ansible, which provided me with a new and more powerfull form of reusability. I've done a lot of it, mostly professionally, which is why I can't share.  
-This project is my effort to find the time (yes, time is the main culprit in this story) to automate and simplify the management of a Raspberry Pi's for different use cases, from CIFS shares to Home Assistant. The goal is to have everything described in code with easily configurable inputs that will allow us to configure the Pi in a modular fashion, easily add new functionality or configuration pieces and bring a fresh Pi to the desired state.  
+This project is my effort to find the time (yes, time is the main culprit in this story) to automate and simplify the management of a Raspberry Pi's for different use cases, from system hardening, to MySQL management, CIFS shares, to setting up Home Assistant and alike. The goal is to have everything described in code with easily configurable inputs that will allow us to configure the Raspberry Pi in a modular fashion, easily add new functionality or configuration pieces, and bring a fresh Pi to the desired state.  
 
 
 Prerequisites
@@ -77,7 +74,7 @@ Playbooks are executable and can be run without invoking `ansible-playbook`, jus
 Target
 ------
 
-You will prmopted to enter the "target host", against which the playbook will run. You should define all hosts in the Ansible inventory (See the `inventory-examples.yml`)  
+All playbooks will prmopted you to enter the "target host", against which the playbook will run. You should define all targets (hosts/groups) in the Ansible inventory (See the `inventory-examples.yml`)  
 The target host can be povided on the command line using the `target` variable, for example  
 ```bash
 ./playbook.yml -e target=MyPi
@@ -122,6 +119,12 @@ letsencrypt-pi
 
 [Let’s Encrypt](https://letsencrypt.org/) is a free, automated, and open certificate authority. The `letsencrypt-pi` role will install CertBot, obtain a free certificate for your domain and setup an automated renewal process.  
 [See the README.md for more information](./roles/letsencrypt-pi/README.md)
+
+mariadb-pi
+--------------
+
+[MariaDB](https://go.mariadb.com/) is a free relational database management system (RDBMS) which is a MySQL (fork) drop-in replacement. The `mariadb-pi` role will install, configure and harden MariaDB + add databases and users.
+[See the README.md for more information](./roles/mysql-pi/README.md)
 
 unifi-controller
 ----------------

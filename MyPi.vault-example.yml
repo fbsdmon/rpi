@@ -48,3 +48,24 @@ api_password: MyApiPasswordHere
 # Location required to calculate the time the sun rises and sets
 ha_latitude: x
 ha_longitude: y
+
+#-------------------------------------------------------------------------------
+# MariaDB
+#-------------------------------------------------------------------------------
+
+# MariaDB bind address
+mariadb_bind_address: 127.0.0.1
+
+# List of databases to be created (default encoding: utf8mb4)
+# NOTE: Changing the encoding will not chage the encoding on a existing database
+mariadb_databases:
+  - name: MyDB
+    encoding: utf8mb4
+
+# List of users to be created (default location: localhost)
+# IMPORTANT: changing the host will create another user
+mariadb_users:
+  - name: MyUser
+    host: localhost
+    password: changeme
+    priv: 'MyDB.*:ALL'

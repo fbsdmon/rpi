@@ -1,0 +1,16 @@
+---
+
+- name: Install MariaDB
+  apt:
+    name:
+      - mariadb-server
+      - mariadb-client
+      - python-mysqldb
+      - pwgen
+
+- name: Start MariaDB and enable at boot
+  systemd:
+    name: mysql
+    state: started
+    enabled: yes
+    daemon_reload: yes

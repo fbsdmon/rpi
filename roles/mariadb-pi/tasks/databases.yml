@@ -1,0 +1,8 @@
+---
+- name: Create databases
+  mysql_db:
+    name: '{{ item.name }}'
+    encoding: '{{ item.encoding | default("utf8mb4") }}'
+    state: present
+  when: item.name is defined and item.name
+  with_items: '{{ mariadb_databases }}'

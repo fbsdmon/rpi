@@ -1,0 +1,45 @@
+---
+
+- name: Removes all anonymous user accounts
+  mysql_user:
+    name: ''
+    host_all: yes
+    state: absent
+
+- name: Remove the test database
+  mysql_db:
+    name: test
+    state: absent
+
+- name: Check if my.cnf is configured for root
+  stat:
+    path: '/root/.my.cnf'
+  register: _root_mycnf
+
+- name: Generate password for root
+  command: pwgen -N 1 -s 32
+  register: _root_password
+  when: not _root_mycnf.stat.exists or mariadb_force_reset_root_pass
+
+- name: Create/update root password
+  mysql_user:
+    name: root
+    host: localhost
+    password: '{{ _root_password.stdout }}'
+    update_password: always
+    check_implicit_admin: yes
+    state: present
+  when: _root_password.stdout is defined and _root_password.stdout
+
+- name: Create my.cnf for root
+  template:
+    src: root/my.cnf.j2
+    dest: '/root/.my.cnf'
+    owner: root
+    group: root
+    mode: 0600
+    seuser: system_u
+    serole: object_r
+    setype: admin_home_t
+    selevel: s0
+  when: _root_password.stdout is defined and _root_password.stdout

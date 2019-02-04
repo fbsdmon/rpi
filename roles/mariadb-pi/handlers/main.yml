@@ -1,0 +1,9 @@
+---
+# handlers file for mariadb-pi
+
+- name: Restart MariaDB
+  systemd:
+    name: mysql
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

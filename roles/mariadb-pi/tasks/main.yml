@@ -1,0 +1,22 @@
+---
+# tasks file for mariadb-pi
+
+- name: "Install MariaDB"
+  include: "install.yml"
+  tags: mariadb_install
+
+- name: "Harden MariaDB"
+  include: "harden.yml"
+  tags: mariadb_harden
+
+- name: "Configure MariaDB"
+  include: "configure.yml"
+  tags: mariadb_configure
+
+- name: "Create Databases"
+  include: "databases.yml"
+  tags: mariadb_databases
+
+- name: "Create Users"
+  include: "users.yml"
+  tags: mariadb_users

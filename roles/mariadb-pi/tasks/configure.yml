@@ -1,0 +1,74 @@
+---
+- name: "Configure the MariaDB bind port in {{ mariadb_server_config }}"
+  ini_file:
+    path: '{{ mariadb_server_config }}'
+    section: mysqld
+    option: port
+    value: '{{ mariadb_bind_port }}'
+    mode: 0644
+    create: no
+    backup: yes
+  notify: Restart MariaDB
+
+- name: "Configure the MariaDB bind address in {{ mariadb_server_config }}"
+  ini_file:
+    path: '{{ mariadb_server_config }}'
+    section: mysqld
+    option: bind-address
+    value: '{{ mariadb_bind_address }}'
+    mode: 0644
+    create: no
+    backup: yes
+  notify: Restart MariaDB
+    
+
+# Following doesn't work, some bug in ansible 2.7
+# https://github.com/ansible/ansible/issues/50594
+# - name: Get the current MariaDB datadir
+#   debug:
+#     msg="datadir is {{ lookup('ini', 'datadir section=mysqld file=/etc/mysql/mariadb.conf.d/50-server.cnf') }}"
+
+# Move the data if datadir changed
+- name: Get the current MariaDB datadir
+  shell: awk -F"=" '/datadir/ {print $2 }' {{ mariadb_server_config }} | tr -d ' '
+  register: _current_datadir
+  changed_when: False
+
+- name: Stop MariaDB
+  systemd:
+    name: mysql
+    state: stopped
+    enabled: no
+  when: _current_datadir.stdout and _current_datadir.stdout != mariadb_datadir
+
+- name: "Configure the MariaDB datadir in {{ mariadb_server_config }}"
+  ini_file:
+    path: '{{ mariadb_server_config }}'
+    section: mysqld
+    option: datadir
+    value: '{{ mariadb_datadir }}'
+    mode: 0644
+    create: no
+    backup: yes
+  when: _current_datadir.stdout and _current_datadir.stdout != mariadb_datadir
+  notify: Restart MariaDB
+
+- name: "Copy MariaDB datadir from {{ _current_datadir.stdout }} to {{ mariadb_datadir }}"
+  synchronize:
+    src: '{{ _current_datadir.stdout }}/'
+    dest: '{{ mariadb_datadir }}'
+    archive: yes
+    delete: yes
+  delegate_to: "{{ inventory_hostname }}"
+  when: _current_datadir.stdout and _current_datadir.stdout != mariadb_datadir
+  notify: Restart MariaDB
+
+- name: "Remove old files from {{ _current_datadir.stdout }}"
+  file: 
+    path: '{{ _current_datadir.stdout }}'
+    state: absent
+  when: _current_datadir.stdout and _current_datadir.stdout != mariadb_datadir
+  notify: Restart MariaDB
+
+- name: Flush handlers
+  meta: flush_handlers
