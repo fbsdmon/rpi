@@ -102,32 +102,32 @@ Roles
 update-pi
 ---------
 Update and upgrade Raspbian, clean up after upgrading, restart any services if needed and notify if reboot is neded  
-[See the README.md for more information](./roles/update-pi/README.md)
+For more information please check the [update-pi README.md](./roles/update-pi/README.md)
 
 config-pi
 ---------
 Basic Rasbian OS configuration, system hardening, standard packages installation, etc. See the Role Variables and Tags serction for more informaiton.  
-[See the README.md for more information](./roles/config-pi/README.md)
+For more information please check the [confing-pi](./roles/config-pi/README.md)
 
 duckdns-pi
 ----------
 Configure Duck DNS on your Raspberry Pi, a free dynamic DNS service  
-[See the README.md for more information](./roles/duckdns-pi/README.md)
+For more information please check the [duckdns-pi README.md](./roles/duckdns-pi/README.md)
 
 letsencrypt-pi
 --------------
 
 [Let’s Encrypt](https://letsencrypt.org/) is a free, automated, and open certificate authority. The `letsencrypt-pi` role will install CertBot, obtain a free certificate for your domain and setup an automated renewal process.  
-[See the README.md for more information](./roles/letsencrypt-pi/README.md)
+For more information please check the [letsencrypt-pi README.md](./roles/letsencrypt-pi/README.md)
 
 mariadb-pi
 --------------
 
-[MariaDB](https://go.mariadb.com/) is a free relational database management system (RDBMS) which is a MySQL (fork) drop-in replacement. The `mariadb-pi` role will install, configure and harden MariaDB + add databases and users.
-[See the README.md for more information](./roles/mysql-pi/README.md)
+[MariaDB](https://go.mariadb.com/) is a free relational database management system (RDBMS) which is a MySQL (fork) drop-in replacement. The `mariadb-pi` role will install, configure and harden MariaDB + add databases and users.  
+For more information please check the [mariadb-pi README.md](./roles/mariadb-pi/README.md) 
 
 unifi-controller
 ----------------
 Install and Configure UniFi Controller   
 *NOTE*: Installs MongoDB and Oracle Java as dependencies  
-[See the README.md for more information](./roles/unifi-controller/README.md)
+For more informatin please check the [unifi-controller README.md](./roles/unifi-controller/README.md)
