@@ -19,3 +19,19 @@
     - net.ipv6.conf.eth0.disable_policy
     - net.ipv6.conf.lo.disable_ipv6
     - net.ipv6.conf.lo.disable_policy
+
+- name: Blacklist IPv6 kernel modules
+  copy:
+    src: blacklist-ipv6.conf
+    dest: /etc/modprobe.d/blacklist-ipv6.conf
+    owner: root
+    group: root
+    mode: 0640
+    backup: yes
+
+- name: Remove IPv6 kernel modules
+  modprobe:
+    name: ipv6
+    state: absent
+  with_items:
+    - ipv6
