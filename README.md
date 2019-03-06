@@ -131,7 +131,7 @@ mosquitto-pi
 --------------
 
 [Mosquitto](https://mosquitto.org/) is an open source message broker that implements the MQTT protocol versions 3.1 and 3.1.1. The `mosquitto-pi` role will install and configure Mosquitto with resonable defaults, including user authentication, as well as  allow you to easilty extend the configuraton.  
-For more information please check the [mosquitto-pi README.md](./roles/mamosquittoriadb-pi/README.md) 
+For more information please check the [mosquitto-pi README.md](./roles/mosquitto-pi/README.md) 
 
 
 unifi-controller
