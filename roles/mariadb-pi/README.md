@@ -44,29 +44,29 @@ Example Playbook
   become: yes
   roles:
     - role: mariadb-pi
-        mariadb_bind_address: 0.0.0.0
-        mariadb_force_reset_root_pass: true
-        mariadb_databases:
-          - name: database1
-            encoding: utf8mb4
-          - name: database2
-          - name: database3
-            encoding: latin1
-        mariadb_users:
-          - name: user1
-            host: localhost
-            password: S3cr3t1
-            priv: 'database1.*:ALL'
-          - name: user2
-            host: mypi.duckdns.org
-            password: S3cr3t2
-            priv: '*.*:ALL,GRANT'
-          - name: replication
-            password: S3cr3t3
-            priv: '*.*:REPLICATION CLIENT'
-          - name: user3
-            password: S3cr3t4
-            priv: 'database1.*:INSERT,UPDATE/database2.*:SELECT/database3.*:ALL'
+      mariadb_bind_address: 0.0.0.0
+      mariadb_force_reset_root_pass: true
+      mariadb_databases:
+        - name: database1
+          encoding: utf8mb4
+        - name: database2
+        - name: database3
+          encoding: latin1
+      mariadb_users:
+        - name: user1
+          host: localhost
+          password: S3cr3t1
+          priv: 'database1.*:ALL'
+        - name: user2
+          host: mypi.duckdns.org
+          password: S3cr3t2
+          priv: '*.*:ALL,GRANT'
+        - name: replication
+          password: S3cr3t3
+          priv: '*.*:REPLICATION CLIENT'
+        - name: user3
+          password: S3cr3t4
+          priv: 'database1.*:INSERT,UPDATE/database2.*:SELECT/database3.*:ALL'
 
 ```
 

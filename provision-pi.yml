@@ -13,18 +13,10 @@
   - name: "Include {% if vault is defined %}{{ vault }}{% else %}{{ target }}{% endif %}.vault.yml (configuraiton variables, credentials, etc.)"
     include_vars: "{% if vault is defined %}{{ vault }}{% else %}{{ target }}{% endif %}.vault.yml"
     tags: always
-  
+
   roles:
     - role: config-pi
-      disable_wifi: true
-      disable_bluetooth: true
-      disable_ipv6: true
     - role: duckdns-pi
     - role: letsencrypt-pi
-
-
-
-    
-    
-
-  
+    - role: mariadb-pi
+    - role: mosquitto-pi

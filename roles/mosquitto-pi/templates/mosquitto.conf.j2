@@ -1,0 +1,30 @@
+{{ ansible_managed | comment }}
+
+# General configuration
+{% for key, value in _mosquitto_config |dictsort(false, 'value') %}
+{%   if value is not iterable or value is string %}
+{{     key }} {{ value }}
+{%   else %}
+{%     for subvalue in value | sort %}
+{{       key }} {{ subvalue }}
+{%     endfor %}
+{%   endif %}
+{% endfor %}
+
+# Listener
+listener  {{ mosquitto_port }} {{ mosquitto_address }}
+{% if mosquitto_port_ssl is defined and mosquitto_port_ssl %}
+# SSL/TLS Listener
+listener  {{ mosquitto_port_ssl }} {{ mosquitto_address_ssl }}
+{% endif %}
+
+# Certificate based SSL/TLS configuration
+{% if _mosquitto_cert_config is defined and _mosquitto_cert_config %}
+{%   for key, value in _mosquitto_cert_config |dictsort(false, 'value') %}
+{{     key }} {{ value }}
+{%   endfor %}
+{% endif %}
+
+# Pre-shared-key based SSL/TLS configuration
+
+# Bridges (connection to other broakers)

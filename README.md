@@ -13,6 +13,7 @@ Manage Raspberry Pi with Ansible
   - [duckdns-pi](#duckdns-pi)
   - [letsencrypt-pi](#letsencrypt-pi)
   - [mariadb-pi](#mariadb-pi)
+  - [mosquitto-pi](#mosquitto-pi)
   - [unifi-controller](#unifi-controller)
 
 
@@ -125,6 +126,13 @@ mariadb-pi
 
 [MariaDB](https://go.mariadb.com/) is a free relational database management system (RDBMS) which is a MySQL (fork) drop-in replacement. The `mariadb-pi` role will install, configure and harden MariaDB + add databases and users.  
 For more information please check the [mariadb-pi README.md](./roles/mariadb-pi/README.md) 
+
+mosquitto-pi
+--------------
+
+[Mosquitto](https://mosquitto.org/) is an open source message broker that implements the MQTT protocol versions 3.1 and 3.1.1. The `mosquitto-pi` role will install and configure Mosquitto with resonable defaults, including user authentication, as well as  allow you to easilty extend the configuraton.  
+For more information please check the [mosquitto-pi README.md](./roles/mamosquittoriadb-pi/README.md) 
+
 
 unifi-controller
 ----------------

@@ -69,3 +69,36 @@ mariadb_users:
     host: localhost
     password: changeme
     priv: 'MyDB.*:ALL'
+
+#-------------------------------------------------------------------------------
+# Mosquitto MQTT
+#-------------------------------------------------------------------------------
+
+# General configuration
+# You can add any key:value pair that is supported by mosquitto
+# https://mosquitto.org/man/mosquitto-conf-5.html
+mosquitto_config:
+  autosave_interval: 60
+  max_queued_messages: 200
+
+# Listeners
+# NOTE: mosquitto_port will be used if SSL/TLS is configured and mosquitto_port_ssl is not defined
+mosquitto_port: 1883
+mosquitto_port_ssl: 8883
+
+# Certificate configuration for SSL/TLS comunication
+mosquitto_cert_config:
+  cafile: /etc/letsencrypt/live/{{ ansible_fqdn }}/chain.pem
+  certfile: /etc/letsencrypt/live/{{ ansible_fqdn }}/cert.pem
+  keyfile: /etc/letsencrypt/live/{{ ansible_fqdn }}/privkey.pem
+  require_certificate: false
+
+# Authentication configuration
+# Dictionary of usernames and passowrds (user: pass)
+mosquitto_users: 
+  mqtt_user1: Passw0rd
+  mqtt_user2: s3crEt
+# Force update user passwords (Default: false)
+mosquitto_force_password_change: true
+
+#-------------------------------------------------------------------------------

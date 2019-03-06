@@ -1,0 +1,84 @@
+---
+# defaults file for mosquitto-pi
+
+### Mosquitto general configuration
+# You can add any key:value pair that is supported by mosquitto
+# https://mosquitto.org/man/mosquitto-conf-5.html
+mosquitto_default_config:
+
+  # Access Controll List file used to control client access to topics on the broker (Default: /etc/mosquitto/acl)
+  # acl_file: /etc/mosquitto/acl
+
+  # Allow clients to connect without providing a username (Defaut: false)
+  # NOTE: Anonymuse access is disabled if any authenticaiton mechanism is configured
+  allow_anonymous: false
+
+  # Send only one message to clients that are subscribed to overlapping subscriptions (Default: true)
+  allow_duplicate_messages: true
+
+  # Allow clients to connect with a zero length client id and have the broker generate a client id for them (Default: true)
+  allow_zero_length_clientid: true
+
+  # If persistance is enabled, AutoSave the mosquotto.db every N seconds to disk (Default: 60)
+  autosave_interval: 60
+
+  # AutoSave if the number of changes (subscription changes, retained messages, received and queued messages) exceedes autosave_interval (Defailt: False)
+  autosave_on_changes: false
+
+  # Add timestamp to each log entry (Default: true)
+  log_timestamp: true
+
+  # Types of messages to log: debug, error, warning, notice, information, subscribe, unsubscribe, websockets, none, all.
+  log_type:
+  - error
+  - warning
+  - notice
+  - information
+
+  # Maximum number of QoS 1 or 2 messages to hold in the queue (per client) above those messages that are currently in flight (Default: 200)
+  max_queued_messages: 100
+
+  # Maximum publish payload size that the broker will allow (Default: 0)
+  # MQTT imposes a maximum payload size of 268435455 bytes 
+  message_size_limit: 0
+
+  # Credentials store for controling client access to the broker (Default: /etc/mosquitto/passwd)
+  password_file: "/etc/mosquitto/passwd"
+
+  # Perist connection, subscription and message data in mosquitto.db
+  persistence: true
+
+
+### Listeners
+
+# Mosquito port (Default: 1883)
+mosquitto_port: 1883
+# Mosquito bind address (Default: 0.0.0.0)
+mosquitto_address:
+
+# Mosquito port for SSL/TLS connections (Default: 8883)
+# NOTE: mosquitto_port will be used if SSL/TLS is configured and mosquitto_port_ssl is not defined
+mosquitto_port_ssl: 8883
+# Mosquito bind address for SSL/TLS connections (Default: 0.0.0.0)
+mosquitto_address_ssl:
+
+
+### Certificate based SSL/TLS configuration
+mosquitto_default_cert_config:
+  # PEM encoded CA certificates that are trusted
+  # cafile: /etc/letsencrypt/live/{{ ansible_fqdn }}/chain.pem
+  # PEM encoded server certificate
+  # certfile: /etc/letsencrypt/live/{{ ansible_fqdn }}/cert.pem
+  # PEM encoded keyfile
+  # keyfile: /etc/letsencrypt/live/{{ ansible_fqdn }}/privkey.pem
+  # Require client certificate (Default: false)
+  require_certificate: false
+
+### Authentication configuration
+# Dictionary of usernames and passowrds (user: pass)
+mosquitto_users: {}
+  # user1: Passw0rd
+  # user2: s3crEt
+
+# Force update user passwords (Default: false)
+mosquitto_force_password_change: false

@@ -1,0 +1,69 @@
+---
+# tasks file for mosquitto-pi
+
+- name: Install Mosquitto
+  apt:
+    name:
+      - mosquitto
+      - mosquitto-clients
+  notify: Restart Mosquitto
+  tags: mosquitto_install
+
+- name: Merge default and custom Mosquitto config
+  set_fact:
+    _mosquitto_config: "{% if mosquitto_config is defined and mosquitto_config %}{{ mosquitto_default_config | combine(mosquitto_config, recursive = True) }}{% else %}{{ mosquitto_default_config }}{% endif %}"
+    _mosquitto_cert_config: "{% if mosquitto_cert_config is defined and mosquitto_cert_config %}{{ mosquitto_default_cert_config | combine(mosquitto_cert_config, recursive = True) }}{% else %}{{ mosquitto_default_cert_config }}{% endif %}"
+  tags: 
+    - mosquitto_users
+    - mosquitto_configure
+
+- name: Configure Mosquitto
+  template: 
+    src: mosquitto.conf.j2
+    dest: "{{ mosquitto_confd_dir }}/mosquitto.conf"
+    mode: 0644
+    backup: yes
+  notify: Restart Mosquitto
+  tags: mosquitto_configure
+
+- name: User Authentication
+  block:
+  
+    - name: Check if Mosquitto password file exists
+      stat: 
+        path: "{{ _mosquitto_config.password_file }}"
+      register: mosquitto_passwd_file
+
+    - name: "Create Mosquitto password file"
+      file:
+        path: "{{ _mosquitto_config.password_file }}"
+        mode: 0640
+        state: touch
+      when: not mosquitto_passwd_file.stat.exists
+
+    - name: Get Mosquitto users
+      command: cut -d ':' -f 1 "{{ _mosquitto_config.password_file }}"
+      register: mosquitto_existing_users
+      changed_when: false
+
+    - name: Remove unknown users
+      command:
+        mosquitto_passwd -D "{{ _mosquitto_config.password_file }}" "{{ item }}"
+      when: item not in mosquitto_users.keys()
+      with_items: "{{ mosquitto_existing_users.stdout_lines }}"
+      no_log: true
+      notify: Restart Mosquitto
+
+    - name: Create/update Mosquitto user/password entries
+      command:
+        mosquitto_passwd -b "{{ _mosquitto_config.password_file }}" "{{ item.key }}" "{{ item.value }}"
+      when: item.key not in mosquitto_existing_users.stdout_lines or mosquitto_force_password_change
+      with_dict: "{{ mosquitto_users }}"
+      no_log: true
+      notify: Restart Mosquitto
+      
+  when: 
+    - _mosquitto_config.password_file is defined 
+    - _mosquitto_config.password_file
+    - mosquitto_users is defined
+  tags: mosquitto_users

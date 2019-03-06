@@ -1,0 +1,9 @@
+---
+# handlers file for mosquitto-pi
+
+- name: Restart Mosquitto
+  systemd:
+    name: mosquitto
+    state: restarted
+    enabled: yes
+    daemon_reload: yes
